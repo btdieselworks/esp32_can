@@ -222,17 +222,17 @@ uint32_t MCP2517FD::initFD(uint32_t nominalRate, uint32_t dataRate)
   initSPI();
 
   if(nominalRate > 0) {
-    if(_initFD(nominalRate, dataRate, 40, 4, false)) {
+    if(_initFD(nominalRate, dataRate, 20, 4, false)) {
       savedNominalBaud = nominalRate;
       savedDataBaud = dataRate;
-      savedFreq = 40;
+      savedFreq = 20;
       running = 1;
 	    return nominalRate;
     }
   } 
   else {
 	  for(i = 20; i < 1000; i = i + 5) {
-	    if(_initFD(i, dataRate, 40, 4, true)) {
+	    if(_initFD(i, dataRate, 20, 4, true)) {
 		    // check for bus activity
 		    Write16(ADDR_CiINTENABLE,0); //write to INT flags to unset flags we can clear
 		    delay(500); // need the bus to be communicating within this time frame
@@ -244,7 +244,7 @@ uint32_t MCP2517FD::initFD(uint32_t nominalRate, uint32_t dataRate)
 		        Mode(CAN_NORMAL_MODE);
 			      savedNominalBaud = i;
             savedDataBaud = dataRate;
-			      savedFreq = 40;	
+			      savedFreq = 20;	
 			      running = 1;
 			      return i;
 		      }
@@ -601,7 +601,7 @@ uint32_t MCP2517FD::set_baudrate(uint32_t ul_baudrate)
 
 uint32_t MCP2517FD::set_baudrateFD(uint32_t nominalSpeed, uint32_t dataSpeed)
 {
-  _initFD(nominalSpeed, dataSpeed, 40, 4, false);
+  _initFD(nominalSpeed, dataSpeed, 20, 4, false);
 }
 
 void MCP2517FD::setListenOnlyMode(bool state)
